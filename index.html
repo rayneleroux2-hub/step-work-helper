@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Step Work Helper</title>
+  <link rel="stylesheet" href="style.css">
+  
+  
+</head>
+<body>
+
+    <!-- USE THIS CODE WHEN SIGN-UP IS ADDED -->
+    <!--<div id="authContainer" class="card" style="max-width:400px;margin:50px auto;">
+  <h2>Login / Sign up</h2>
+
+  <input id="email" type="text" placeholder="Email" style="width:100%;margin:8px 0;padding:10px;">
+  <input id="password" type="password" placeholder="Password" style="width:100%;margin:8px 0;padding:10px;">
+
+  <button id="signupBtn" class="primary" style="width:100%;margin-top:10px;">Sign Up</button>
+  <button id="loginBtn" style="width:100%;margin-top:10px;">Login</button>
+
+  <p id="authMsg" class="muted"></p>
+</div> -->
+
+  <div class="app">
+    <header class="hero">
+      <div>
+        <div class="pill">✨ Private step-work journal</div>
+        <h1>Step Work Helper</h1>
+        <p class="muted">A guided recovery writing app for answering step-work questions with honesty, structure, and practical recovery action.</p>
+      </div>
+
+      <div class="card">
+        <div class="top-row">
+          <div>
+            <p class="stat-label">Overall progress</p>
+            <p class="stat-value" id="heroProgress">0%</p>
+          </div>
+          <div>
+            <p class="stat-label">Completed</p>
+            <p class="stat-value" id="heroCompleted">0/12</p>
+          </div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="heroProgressBar"></div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav">
+      <button class="primary" id="dashboardBtn">🏠 Dashboard</button>
+      <button id="workspaceBtn">📖 Step workspace</button>
+      <button id="exportBtn">⬇️ Export writing</button>
+      <button id="importBtn">📥 Import writing</button>
+      <input type="file" id="importFile" accept=".txt, .json" hidden>
+    </nav>
+
+    <main id="dashboardView">
+      <section class="dashboard-grid">
+        <div class="card stat">
+          <p class="stat-label">Steps completed</p>
+          <p class="stat-value" id="statCompleted">0/12</p>
+          <p class="muted" id="statCompletedHelp">0% through the work</p>
+        </div>
+        <div class="card stat">
+          <p class="stat-label">Steps started</p>
+          <p class="stat-value" id="statStarted">0</p>
+          <p class="muted">Steps with saved writing</p>
+        </div>
+        <div class="card stat">
+          <p class="stat-label">Words written</p>
+          <p class="stat-value" id="statWords">0</p>
+          <p class="muted">Across all entries</p>
+        </div>
+        <div class="card stat">
+          <p class="stat-label">Current risk</p>
+          <p class="stat-value" id="statRisk">Stable</p>
+          <p class="muted" id="statRiskHelp">Keep doing the simple things well.</p>
+        </div>
+      </section>
+
+      <section class="two-col">
+        <div class="card">
+          <div class="top-row">
+            <div>
+              <p class="stat-label">Recovery overview</p>
+              <h2>Your step-work dashboard</h2>
+              <p class="muted">Track progress, see where you left off, and choose the next honest action.</p>
+            </div>
+            <button class="primary" onclick="exportWriting()">⬇️ Export</button>
+          </div>
+
+          <div class="progress-track">
+            <div class="progress-bar" id="dashboardProgressBar"></div>
+          </div>
+
+          <div class="step-grid" id="stepGrid"></div>
+        </div>
+
+        <div class="card risk-card stable" id="riskCard">
+          <p class="stat-label">Craving risk</p>
+          <h2 id="riskTitle">Stable</h2>
+          <p id="riskMessage">Keep doing the simple things well.</p>
+          <div class="soft-box">
+            <p class="stat-label">Highest saved craving level</p>
+            <p class="stat-value" id="highestCraving">0/10</p>
+            <p id="highestCravingStep">Step 1: Honesty and surrender</p>
+          </div>
+          <div id="highRiskAction" class="warning hidden">
+            Reach out to your sponsor, a trusted person, a meeting, or emergency support if you feel unsafe. Do not sit alone with a high-risk craving.
+          </div>
+        </div>
+      </section>
+
+      <section class="three-col">
+        <div class="card">
+          <p class="stat-label">Continue here</p>
+          <h2 id="nextStepTitle">Step 1: Honesty and surrender</h2>
+          <p class="muted" id="nextStepFocus"></p>
+          <div class="soft-box">
+            <strong>Suggested question</strong>
+            <p id="nextQuestion"></p>
+          </div>
+          <button class="primary" id="openNextStepBtn">🎯 Open step</button>
+        </div>
+
+        <div class="card">
+          <p class="stat-label">Recent activity</p>
+          <h2>Last writing</h2>
+          <div id="recentActivity"></div>
+        </div>
+      </section>
+    </main>
+
+    <main id="workspaceView" class="workspace hidden">
+      <aside class="sidebar">
+        <div class="card">
+          <label for="searchInput">Search steps</label>
+          <input id="searchInput" class="search" type="text" placeholder="fear, amends, honesty..." />
+        </div>
+        <div id="stepList"></div>
+      </aside>
+
+      <section class="section-stack">
+        <div class="card">
+          <div class="top-row">
+            <div>
+              <p class="stat-label" id="workspaceStepNumber">Step 1</p>
+              <h2 id="workspaceStepTitle">Honesty and surrender</h2>
+              <p class="muted" id="workspaceStepFocus"></p>
+            </div>
+            <div class="nav">
+              <button class="danger" id="resetStepBtn">↻ Reset</button>
+              <button class="primary" id="markDoneBtn">✓ Mark done</button>
+            </div>
+          </div>
+
+          <div class="soft-box">
+            <div class="top-row">
+              <div>
+                <strong>Craving check</strong>
+                <p class="muted">Rate how loud the obsession feels right now.</p>
+              </div>
+              <div class="range-row">
+                <input id="cravingRange" type="range" min="0" max="10" value="0" />
+                <span class="score" id="cravingScore">0</span>
+              </div>
+            </div>
+            <div id="cravingWarning" class="warning hidden">
+              This is a high-risk moment. Pause writing if needed. Call your sponsor, message someone safe, get to a meeting, leave the risky place, or contact local emergency support if you might hurt yourself or someone else.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Guided questions</h2>
+          <div id="promptList"></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <h2>Answer starters</h2>
+            <p class="muted">Use these when you need a simple way into the writing.</p>
+            <div id="starterButtons" class="starter-buttons"></div>
+            <div class="soft-box hidden" id="starterBox">
+              <strong>Try writing from here:</strong>
+              <p id="starterText"></p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Sponsor share note</h2>
+            <textarea id="sponsorNote" placeholder="What do you need guidance on?"></textarea>
+            <div class="soft-box">
+              <strong>Preview message to sponsor / mentor</strong>
+              <p id="sponsorPreview"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Deeper reflection</h2>
+          <div style="margin-top: 14px;">
+            <label for="freeWrite">Free write</label>
+            <textarea id="freeWrite" placeholder="Write what came up. Messy is allowed."></textarea>
+          </div>
+          <div style="margin-top: 14px;">
+            <label for="feelings">Feelings underneath the answer</label>
+            <textarea id="feelings" placeholder="Fear, shame, anger, grief, relief, hope... name what is present."></textarea>
+          </div>
+          <div style="margin-top: 14px;">
+            <label for="action">Next right action</label>
+            <textarea id="action" placeholder="One practical action: call someone, pray, attend a meeting, make a list, apologize, rest, or avoid a risky place."></textarea>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <p class="footer-note">
+      Your writing saves on this device in the browser. For privacy, export your work and keep it somewhere safe.
+    </p>
+  </div>
+
+  <script src="script.js"></script>
+
+
+  
+</body>
+</html>
+
