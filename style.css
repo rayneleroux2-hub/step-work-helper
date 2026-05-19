@@ -3,7 +3,7 @@
       --card: #ffffff;
       --text: #0f172a;
       --muted: #64748b;
-      --border: #e2e8f0;
+      --border: #1e6fda;
       --soft: #f1f5f9;
       --dark: #0f172a;
       --good-bg: #ecfdf5;
@@ -63,6 +63,8 @@
     h2, h3 {
       margin: 0;
       letter-spacing: -0.02em;
+      text-align: center;
+      padding-top: 15px;
     }
 
     p {
@@ -365,6 +367,12 @@
       border-radius: 18px;
       padding: 15px;
       margin-top: 14px;
+    }
+
+    #stepList {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .hidden {
